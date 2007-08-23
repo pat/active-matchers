@@ -1,7 +1,12 @@
 RspecAdditions
 ==============
 
-Some helpful rspec matchers for testing validations and associations
+Some helpful rspec matchers for testing validations and associations.
+
+Make sure, in your spec_helper.rb file, you add an include as follows:
+  config.include RspecAdditions::Matchers
+
+I'd like to make that automatic, but haven't figured out how to just yet.
 
 Examples
 =======
