@@ -14,7 +14,7 @@ module RspecAdditions
     #   Model.should need.one_of(:first_name, :last_name).using(@valid_attributes)
     # 
     def need(*fields)
-      ValidationMatcher.new(:require, *fields)
+      ValidationMatcher.new(:require, *fields).using(@base_attributes)
     end
     
     # Test validates_length_of :name matches database field length
@@ -24,7 +24,7 @@ module RspecAdditions
     #   Model.should limit_length_of(:name).to(255).using(@valid_attributes)
     #
     def limit_length_of(*fields)
-      ValidationMatcher.new(:length, *fields)
+      ValidationMatcher.new(:length, *fields).using(@base_attributes)
     end
     
     # Test belongs_to :parent
@@ -47,6 +47,19 @@ module RspecAdditions
     #
     def have_many(*fields)
       AssociationMatcher.new(:has_many, *fields)
+    end
+    
+    # Useful for multiple requests using the same base attributes
+    #
+    #   using(@valid_attributes) do
+    #     Model.should need(:name)
+    #     Model.should limit_length_of(:name).to(100)
+    #   end
+    #
+    def using(base_attributes={}, &block)
+      @base_attributes = base_attributes
+      yield
+      @base_attributes= {}
     end
   end
 end
