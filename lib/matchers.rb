@@ -17,6 +17,8 @@ module RspecAdditions
       ValidationMatcher.new(:require, *fields).using(@base_attributes)
     end
     
+    alias_method :mandate, :need
+    
     # Test validates_length_of :name matches database field length
     #   Model.should limit_length_of(:name).using(@valid_attributes)
     #
