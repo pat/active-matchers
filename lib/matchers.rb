@@ -49,6 +49,28 @@ module RspecAdditions
       AssociationMatcher.new(:has_many, *fields)
     end
     
+    # Test has_one :item
+    #   Model.should have_one(:item)
+    #
+    # Test has_one :item, :class_name => "CustomClass", :foreign_key => "some_id"
+    #   Model.should have_one(:item).with_options(
+    #     :class_name => "CustomClass", :foreign_key => "some_id")
+    #
+    def have_one(*fields)
+      AssociationMatcher.new(:has_one, *fields)
+    end
+    
+    # Test has_and_belongs_to_many :items
+    #   Model.should have_and_belong_to_many(:items)
+    #
+    # Test has_and_belongs_to_many :items, :class_name => "CustomClass"
+    #   Model.should have_one(:item).with_options(
+    #     :class_name => "CustomClass")
+    #
+    def have_and_belong_to_many(*fields)
+      AssociationMatcher.new(:has_and_belongs_to_many, *fields)
+    end
+    
     # Useful for multiple requests using the same base attributes
     #
     #   using(@valid_attributes) do

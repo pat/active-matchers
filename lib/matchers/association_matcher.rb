@@ -38,7 +38,7 @@ module RspecAdditions
             return false
           end
           if assoc.to_hash[:options] != @options
-            @error = "#{model.name}.#{attribute} should have options #{@options}, but has #{assoc.to_hash[:options]}"
+            @error = "#{@model.name}.#{attribute} should have options #{@options.inspect}, but has #{assoc.to_hash[:options].inspect}"
             return false
           end
         end

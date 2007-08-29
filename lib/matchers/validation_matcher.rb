@@ -10,7 +10,7 @@ module RspecAdditions
         @model = model
         case @type
         when :require
-          confirm_required
+          confirm_required(&@if)
         when :unique
           confirm_unique
         when :one_of_many
@@ -33,6 +33,11 @@ module RspecAdditions
       
       def using(attributes={})
         @base_attributes = attributes
+        self
+      end
+      
+      def if(&block)
+        @if = block
         self
       end
       
@@ -59,6 +64,8 @@ module RspecAdditions
 
         @attributes.each do |attribute|
           obj = @model.new @base_attributes.except(*attribute)
+          yield obj if block_given?
+          
           if obj.valid?
             @error = "#{model.name}.valid? should be false without #{attribute}, but returned true"
             return false
