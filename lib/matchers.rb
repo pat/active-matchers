@@ -1,6 +1,5 @@
-path = File.dirname(File.expand_path(__FILE__))
-require "#{path}/matchers/association_matcher"
-require "#{path}/matchers/validation_matcher"
+require "matchers/association_matcher"
+require "matchers/validation_matcher"
 
 module RspecAdditions
   module Matchers
