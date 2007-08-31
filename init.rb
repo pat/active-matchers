@@ -1,2 +1,2 @@
-require "active_record_associations"
+require "active_record_additions"
 require "matchers"
