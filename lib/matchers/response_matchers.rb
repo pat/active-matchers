@@ -41,7 +41,7 @@ module ActiveMatchers
         def full_path(path)
           return nil if path.nil?
           path.include?('/') ? path : "#{@controller.class.to_s.underscore.gsub('_controller','')}/#{path}"
-        else
+        end
       end
       
       class NotFoundMatcher
