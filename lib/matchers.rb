@@ -88,7 +88,7 @@ module ActiveMatchers
     
     #
     def succeed
-      ResponseMatchers::SuccessMatcher.new
+      ResponseMatchers::SuccessMatcher.new(@controller)
     end
     
     # Use to confirm whether a response is/is not a 404

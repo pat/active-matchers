@@ -2,18 +2,46 @@ module ActiveMatchers
   module Matchers
     module ResponseMatchers
       class SuccessMatcher
+        def initialize(controller)
+          @controller = controller
+        end
+        
         def matches?(response)
           @response = response
-          response.success?
+          if @template.nil?
+            @response.success?
+          else
+            @response.success? && full_path(@template) == full_path(@response.rendered_file)
+          end
+        end
+        
+        def with_template(template)
+          @template = template
+          self
         end
         
         def failure_message
-          "Response should have succeeded, but returned with code #{@response.response_code}."
+          if @template.nil? || !@response.success?
+            "Response should have succeeded, but returned with code #{@response.response_code}."
+          else
+            "Response should have rendered #{@template}, but instead rendered #{@response.rendered_file}."
+          end
         end
         
         def negative_failure_message
-          "Response should not have succeeded, but did."
+          if @response.success?
+            "Response should not have succeeded, but did."
+          else
+            "Response should not have rendered #{@template}, but did."
+          end
         end
+        
+        private
+        
+        def full_path(path)
+          return nil if path.nil?
+          path.include?('/') ? path : "#{@controller.class.to_s.underscore.gsub('_controller','')}/#{path}"
+        else
       end
       
       class NotFoundMatcher
