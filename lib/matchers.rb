@@ -1,7 +1,7 @@
 require "matchers/association_matcher"
 require "matchers/validation_matcher"
 
-module RspecAdditions
+module ActiveMatchers
   module Matchers
     # Test validates_presence_of :name
     #   Model.should need(:name).using(@valid_attributes)

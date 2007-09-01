@@ -1,4 +1,4 @@
-require "active_record_additions"
+require "assoc_reflection_matchers"
 require "matchers"
 
 ActiveRecord::Reflection::AssociationReflection.send(:include,

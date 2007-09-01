@@ -1,4 +1,4 @@
-module RspecAdditions
+module ActiveMatchers
   module Matchers
     class ValidationMatcher
       def initialize(type, *attributes)

@@ -1,4 +1,4 @@
-module RspecAdditions
+module ActiveMatchers
   module Matchers
     class AssociationMatcher
       def initialize(macro, *attributes)
