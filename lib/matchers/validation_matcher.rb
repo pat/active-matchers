@@ -96,7 +96,7 @@ module ActiveMatchers
         # Change the values of the unique attributes to remove collisions
         @attributes.each do |attribute|
           return false if obj.errors.on(attribute).empty?
-          obj.send "#{attribute.to_s}=", "#{options[:attributes][attribute]} - Edit"
+          obj.send "#{attribute.to_s}=", "#{@base_attributes[attribute]} - Edit"
         end
         return obj.valid?
       end

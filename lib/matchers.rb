@@ -1,5 +1,6 @@
 require "matchers/association_matcher"
 require "matchers/validation_matcher"
+require "matchers/response_matchers"
 
 module ActiveMatchers
   module Matchers
@@ -83,6 +84,30 @@ module ActiveMatchers
       @base_attributes = base_attributes
       yield
       @base_attributes= {}
+    end
+    
+    #
+    def succeed
+      ResponseMatchers::SuccessMatcher.new
+    end
+    
+    # Use to confirm whether a response is/is not a 404
+    #
+    #   response.should be_a_404
+    #
+    def be_a_404
+      ResponseMatchers::NotFoundMatcher.new
+    end
+    
+    # Use to confirm whether a response redirected
+    #
+    #   response.should redirect
+    #   response.should_not redirect
+    #   response.should redirect.to("url")
+    #   response.should_not redirect.to("url")
+    #
+    def redirect
+      ResponseMatchers::RedirectMatcher.new
     end
   end
 end
