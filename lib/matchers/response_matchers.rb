@@ -70,7 +70,7 @@ module ActiveMatchers
           when :what
             @response.redirect?
           when :where
-            @response.redirect? && @response.redirect_url = @url
+            @response.redirect? && @response.redirect_url == @url
           else
             false
           end
