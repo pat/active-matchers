@@ -67,16 +67,16 @@ module ActiveMatchers
           yield obj if block_given?
           
           if obj.valid?
-            @error = "#{model.name}.valid? should be false without #{attribute}, but returned true"
+            @error = "#{@model.name}.valid? should be false without #{attribute}, but returned true"
             return false
           end
           if obj.errors.on(attribute).empty?
-            @error = "#{model.name} should have errors on #{attribute} when #{attribute} is missing"
+            @error = "#{@model.name} should have errors on #{attribute} when #{attribute} is missing"
             return false
           end
           obj.send "#{attribute.to_s}=", @base_attributes[attribute]
           unless obj.valid?
-            @error = "#{model.name} should be valid when #{attribute} is supplied"
+            @error = "#{@model.name} should be valid when #{attribute} is supplied"
             return false
           end
         end
