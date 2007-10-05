@@ -1,15 +1,13 @@
-Active Matchers
-==============
+== Active Matchers
 
-Some helpful rspec matchers for testing validations and associations.
+Some helpful rspec matchers for testing validations and associations. It is not complete, especially in the case of validations, and lacking in documentation, but might be useful nonetheless.
 
 Make sure, in your spec_helper.rb file, you add an include as follows:
   config.include ActiveMatchers::Matchers
 
 I'd like to make that automatic, but haven't figured out how to just yet.
 
-Examples
-=======
+=== Examples
 
 Test validates_presence_of :name
   Model.should need(:name).using(@valid_attributes)
@@ -48,6 +46,8 @@ Test has_many :items
 Test has_many :items, :class_name => "CustomClass", :foreign_key => "some_id"
   Model.should have_many(:items).with_options(
     :class_name => "CustomClass", :foreign_key => "some_id")
+    
+Similar testing available for has_one (Model.should have_one) and has_and_belongs_to_many (Model.should have_and_belong_to_many)
 
 
 Copyright (c) 2007 Pat Allan & James Healy, released under the MIT license
