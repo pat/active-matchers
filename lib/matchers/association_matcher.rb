@@ -20,6 +20,12 @@ module ActiveMatchers
         self
       end
       
+      def through(assoc)
+        @options ||= {}
+        @options[:through] = assoc
+        self
+      end
+      
       private
       
       def confirm_association
