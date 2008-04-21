@@ -3,9 +3,13 @@ require 'rake/testtask'
 require 'rake/rdoctask'
 require 'rake/gempackagetask'
 
+require 'active_record'
+
 # allow require of spec/spec_helper
 $LOAD_PATH.unshift File.dirname(__FILE__) + '/../'
 $LOAD_PATH.unshift File.dirname(__FILE__) + '/lib'
+
+require 'active_matchers'
 
 desc 'Default: run unit tests.'
 task :default => :test
@@ -40,7 +44,7 @@ spec = Gem::Specification.new do |s|
   s.rubyforge_project = "active-matchers"
   s.files             = FileList[
     "lib/**/*.rb",
-    "LICENCE",
+    # "MIT-LICENCE",
     "README"
   ]
 end
