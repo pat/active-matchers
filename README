@@ -2,6 +2,9 @@
 
 Some helpful rspec matchers for testing validations and associations. It is not complete, especially in the case of validations, and lacking in documentation, but might be useful nonetheless.
 
+To install:
+  script/plugin install http://rails-oceania.googlecode.com/svn/patallan/active_matchers/
+
 Make sure, in your spec_helper.rb file, you add an include as follows:
   config.include ActiveMatchers::Matchers
 
