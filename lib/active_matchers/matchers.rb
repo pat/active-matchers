@@ -29,6 +29,12 @@ module ActiveMatchers
       ValidationMatcher.new(:length, *fields).using(@base_attributes)
     end
     
+    # Test validates_numericality_of :length
+    #   Model.should have_numeric(:length).using(@valid_attributes)
+    def need_numeric(*fields)
+      ValidationMatcher.new(:numeric, *fields).using(@base_attributes)
+    end
+    
     # Test belongs_to :parent
     #   Model.should belong_to(:parent)
     #

@@ -17,6 +17,8 @@ module ActiveMatchers
           confirm_one_of_many
         when :length
           confirm_length
+        when :numeric
+          confirm_numericality
         else
           false
         end
@@ -83,7 +85,7 @@ module ActiveMatchers
         
         true
       end
-      
+            
       def confirm_unique
         return true if @attributes.empty?
 
@@ -141,6 +143,24 @@ module ActiveMatchers
         
         true
       end
+      
+      def confirm_numericality
+        return true if @attributes.empty?
+        
+        obj = @model.new @base_attributes
+        
+        @attributes.each do |attribute|
+          # Change the attribute to a string
+          obj.send "#{attribute.to_s}=", "String"
+          return false if obj.valid?
+          
+          obj.send "#{attribute.to_s}=", @base_attributes[attribute]
+        end
+        # Catches chance that model is initially invalid
+        return obj.valid?
+        
+      end
+      
     end
   end
 end
