@@ -49,13 +49,13 @@ module ActiveMatchers
         self
       end
       
-      def to(length)
-        @length = length
+      def to(upper_limit)
+        @upper_limit = upper_limit
         self
       end
       
-      def starting_with(base)
-        @base = base
+      def from(lower_limit)
+        @lower_limit = lower_limit
         self
       end
       
@@ -121,22 +121,32 @@ module ActiveMatchers
       def confirm_length
         return true if @attributes.empty?
         
-        @base ||= ""
-
+        error_msgs = []
+        @lower_limit ||= 0
+        
         @attributes.each do |attribute|
-          # Get the maximum length from the database
-          @length ||= @model.columns_hash[attribute.to_s].limit
           obj = @model.new @base_attributes.except(attribute)
-          # Confirm the maximum length is valid
-          obj.send "#{attribute.to_s}=", @base + "a"*(@length - @base.length)
-          unless obj.valid?
-            @error = "#{@model.name} should be valid when #{attribute} has a length of #{@length}"
-            return false
+          
+          if @lower_limit > 0
+            obj.send "#{attribute.to_s}=", 'a'*(@lower_limit)
+            error_msgs << "should be valid when #{attribute} has a length of #{@lower_limit}" unless obj.valid?
+          
+            obj.send "#{attribute.to_s}=", 'a'*(@lower_limit-1)
+            error_msgs << "should not be valid when #{attribute} has a length less than #{@lower_limit}" if obj.valid?
           end
-          # Confirm something longer than the maximum length is not valid
-          obj.send "#{attribute.to_s}=", @base + "a"*(@length+1 - @base.length)
-          if obj.valid?
-            @error = "#{@model.name} should be invalid when #{attribute} has a length of #{@length+1}"
+          
+          @upper_limit ||= @model.columns_hash[attribute.to_s].limit unless @lower_limit > 0
+          
+          if @upper_limit
+            obj.send "#{attribute.to_s}=", 'a'*(@upper_limit)
+            error_msgs << "should be valid when #{attribute} has a length of #{@upper_limit}" unless obj.valid?
+      
+            obj.send "#{attribute.to_s}=", 'a'*(@upper_limit+1)
+            error_msgs << "should not be valid when #{attribute} has a length greater than #{@upper_limit}" if obj.valid?
+          end
+          
+          unless error_msgs.empty?
+            @error = "#{@model.name} " + error_msgs.join(' and ')
             return false
           end
         end

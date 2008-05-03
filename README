@@ -27,6 +27,13 @@ Test validates_length_of :name matches database field length
 Test validates_length_of :name, :maximum => 255
   Model.should limit_length_of(:name).to(255).using(@valid_attributes)
 
+Test validates_length_of :name, :minimum => 3
+	Model.should limit_length_of(:name).from(3).using(@valid_attributes)
+
+Test validates_length_of :name, :within => 3..40
+  Model.should limit_length_of(:name).from(3).to(4).using(@valid_attributes)
+
+
 You can group multiple validation checks together like so:
   using(@valid_attributes) do
     Model.should need(:name)
