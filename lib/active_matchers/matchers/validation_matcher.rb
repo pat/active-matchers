@@ -160,15 +160,23 @@ module ActiveMatchers
         obj = @model.new @base_attributes
         
         @attributes.each do |attribute|
+          
+          unless obj.valid?
+            @error = "#{@model.name} should be valid when #{attribute} is numeric"
+            return false
+          end
+          
           # Change the attribute to a string
           obj.send "#{attribute.to_s}=", "String"
-          return false if obj.valid?
+          if obj.valid?
+            @error = "#{@model.name} should be not be valid when #{attribute} is not numeric"
+            return false
+          end
           
           obj.send "#{attribute.to_s}=", @base_attributes[attribute]
         end
-        # Catches chance that model is initially invalid
-        return obj.valid?
         
+        true
       end
       
     end
