@@ -33,6 +33,11 @@ module ActiveMatchers
         self
       end
       
+      def to_be_numeric
+        @type = :numeric
+        self
+      end
+      
       def using(attributes={})
         @base_attributes = attributes
         self
