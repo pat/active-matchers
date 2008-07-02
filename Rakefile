@@ -1,52 +1,52 @@
-require 'rake'
-require 'rake/testtask'
-require 'rake/rdoctask'
+require 'rubygems'
 require 'rake/gempackagetask'
+require 'rubygems/specification'
+require 'date'
 
-require 'active_record'
+$:.unshift File.join(File.dirname(__FILE__), 'lib')
 
-# allow require of spec/spec_helper
-$LOAD_PATH.unshift File.dirname(__FILE__) + '/../'
-$LOAD_PATH.unshift File.dirname(__FILE__) + '/lib'
+require 'active-matchers'
 
-require 'active_matchers'
-
-desc 'Default: run unit tests.'
-task :default => :test
-
-desc 'Test the rspec_additions plugin.'
-Rake::TestTask.new(:test) do |t|
-  t.libs << 'lib'
-  t.pattern = 'test/**/*_test.rb'
-  t.verbose = true
-end
-
-desc 'Generate documentation for the rspec_additions plugin.'
-Rake::RDocTask.new(:rdoc) do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'Active Matchers'
-  rdoc.options << '--line-numbers' << '--inline-source'
-  rdoc.rdoc_files.include('README')
-  rdoc.rdoc_files.include('lib/**/*.rb')
-end
+GEM = "active-matchers"
+GEM_VERSION = ActiveMatchers::Version::STRING
+AUTHOR = "Pat Allan"
+EMAIL = "pat@freelancing-gods.com"
+HOMEPAGE = "http://am.freelancing-gods.com"
+SUMMARY = "Helpful rspec matchers for testing validations and associations."
 
 spec = Gem::Specification.new do |s|
-  s.name              = "active-matchers"
-  s.version           = ActiveMatchers::Version::String
-  s.summary           = "Helpful rspec matchers for testing validations and associations."
-  s.description       = "Helpful rspec matchers for testing validations and associations."
-  s.author            = "Pat Allan"
-  s.email             = "pat@freelancing-gods.com"
-  s.homepage          = "http://am.freelancing-gods.com"
-  s.has_rdoc          = true
-  s.rdoc_options     << "--title" << "Active Matchers - Model Matchers for RSpec" <<
-                        "--line-numbers"
-  s.rubyforge_project = "active-matchers"
-  s.files             = FileList[
-    "lib/**/*.rb",
-    # "MIT-LICENCE",
-    "README"
-  ]
+  s.name = GEM
+  s.version = GEM_VERSION
+  s.platform = Gem::Platform::RUBY
+  s.has_rdoc = true
+  s.extra_rdoc_files = ['README','LICENSE']
+  s.summary = SUMMARY
+  s.description = s.summary
+  s.author = AUTHOR
+  s.email = EMAIL
+  s.homepage = HOMEPAGE
+  
+  s.add_dependency 'active_record'
+  
+  s.require_path = 'lib'
+  s.autorequire = GEM
+  s.files = %w(README LICENSE Rakefile init.rb) + Dir.glob("{lib,specs}/**/*")
+end
+
+Rake::GemPackageTask.new(spec) do |pkg|
+  pkg.gem_spec = spec
+end
+
+desc "install the gem locally"
+task :install => [:package] do
+  sh %{sudo gem install pkg/#{GEM}-#{GEM_VERSION}}
+end
+
+desc "create a gemspec file"
+task :make_spec do
+  File.open("#{GEM}.gemspec", "w") do |file|
+    file.puts spec.to_ruby
+  end
 end
 
 Rake::GemPackageTask.new(spec) do |p|

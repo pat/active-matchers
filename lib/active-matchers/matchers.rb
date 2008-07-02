@@ -1,6 +1,6 @@
-require "active_matchers/matchers/association_matcher"
-require "active_matchers/matchers/validation_matcher"
-require "active_matchers/matchers/response_matchers"
+require "active-matchers/matchers/association_matcher"
+require "active-matchers/matchers/validation_matcher"
+require "active-matchers/matchers/response_matchers"
 
 module ActiveMatchers
   module Matchers
