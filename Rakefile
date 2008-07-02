@@ -20,7 +20,7 @@ spec = Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.rubyforge_project = GEM
   s.has_rdoc = true
-  s.extra_rdoc_files = ['README','LICENSE']
+  s.extra_rdoc_files = ['README.textile','LICENSE']
   s.summary = SUMMARY
   s.description = s.summary
   s.author = AUTHOR
@@ -30,7 +30,7 @@ spec = Gem::Specification.new do |s|
   s.add_dependency 'activerecord'
   
   s.require_path = 'lib'
-  s.files = %w(README LICENSE Rakefile init.rb) + Dir.glob("{lib,specs}/**/*")
+  s.files = %w(README.textile LICENSE Rakefile init.rb) + Dir.glob("{lib,specs}/**/*")
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|
