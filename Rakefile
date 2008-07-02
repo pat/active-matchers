@@ -18,6 +18,7 @@ spec = Gem::Specification.new do |s|
   s.name = GEM
   s.version = GEM_VERSION
   s.platform = Gem::Platform::RUBY
+  s.rubyforge_project = GEM
   s.has_rdoc = true
   s.extra_rdoc_files = ['README','LICENSE']
   s.summary = SUMMARY
@@ -29,7 +30,6 @@ spec = Gem::Specification.new do |s|
   s.add_dependency 'activerecord'
   
   s.require_path = 'lib'
-  s.autorequire = GEM
   s.files = %w(README LICENSE Rakefile init.rb) + Dir.glob("{lib,specs}/**/*")
 end
 
