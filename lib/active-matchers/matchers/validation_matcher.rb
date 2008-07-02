@@ -141,20 +141,20 @@ module ActiveMatchers
           
           if @lower_limit > 0
             obj.send "#{attribute.to_s}=", 'a'*(@lower_limit)
-            error_msgs << "should be valid when #{attribute} has a length of #{@lower_limit}" unless obj.valid?
+            error_msgs << "#{@model.name}.valid? should be true when #{attribute} has a length of #{@lower_limit}, but returned false" unless obj.valid?
           
             obj.send "#{attribute.to_s}=", 'a'*(@lower_limit-1)
-            error_msgs << "should not be valid when #{attribute} has a length less than #{@lower_limit}" if obj.valid?
+            error_msgs << "#{@model.name}.valid? should be false when #{attribute} has a length less than #{@lower_limit}, but returned true" if obj.valid?
           end
           
           @upper_limit ||= @model.columns_hash[attribute.to_s].limit unless @lower_limit > 0
           
           if @upper_limit
             obj.send "#{attribute.to_s}=", 'a'*(@upper_limit)
-            error_msgs << "should be valid when #{attribute} has a length of #{@upper_limit}" unless obj.valid?
+            error_msgs << "#{@model.name}.valid? should be true when #{attribute} has a length of #{@upper_limit}, but returned false" unless obj.valid?
       
             obj.send "#{attribute.to_s}=", 'a'*(@upper_limit+1)
-            error_msgs << "should not be valid when #{attribute} has a length greater than #{@upper_limit}" if obj.valid?
+            error_msgs << "#{@model.name}.valid? should be false when #{attribute} has a length greater than #{@upper_limit}, but returned true" if obj.valid?
           end
           
           unless error_msgs.empty?
@@ -174,14 +174,14 @@ module ActiveMatchers
         @attributes.each do |attribute|
           
           unless obj.valid?
-            @error = "#{@model.name} should be valid when #{attribute} is numeric"
+            @error = "#{@model.name}.valid? should be true when #{attribute} is numeric, but returned false"
             return false
           end
           
           # Change the attribute to a string
           obj.send "#{attribute.to_s}=", "String"
           if obj.valid?
-            @error = "#{@model.name} should be not be valid when #{attribute} is not numeric"
+            @error = "#{@model.name}.valid? should be false when #{attribute} is not numeric, but returned true"
             return false
           end
           
@@ -199,7 +199,7 @@ module ActiveMatchers
         @attributes.each do |attribute|
           obj.send("#{attribute.to_s}=",-1)
           if obj.valid?
-            @error = "#{@model.name} should not be valid when #{attribute} is less than zero"
+            @error = "#{@model.name}.valid? should be false when #{attribute} is less than zero, but returned true"
             return false
           end
           
