@@ -19,6 +19,8 @@ module ActiveMatchers
           confirm_length
         when :numeric
           confirm_numericality
+        when :unsigned
+          confirm_zero_or_greater
         else
           false
         end
@@ -35,6 +37,11 @@ module ActiveMatchers
       
       def to_be_numeric
         @type = :numeric
+        self
+      end
+      
+      def to_be_unsigned
+        @type = :unsigned
         self
       end
       
@@ -175,6 +182,24 @@ module ActiveMatchers
           obj.send "#{attribute.to_s}=", "String"
           if obj.valid?
             @error = "#{@model.name} should be not be valid when #{attribute} is not numeric"
+            return false
+          end
+          
+          obj.send "#{attribute.to_s}=", @base_attributes[attribute]
+        end
+        
+        true
+      end
+      
+      def confirm_zero_or_greater
+        return true if @attributes.empty?
+        
+        obj = @model.new(@base_attributes)
+        
+        @attributes.each do |attribute|
+          obj.send("#{attribute.to_s}=",-1)
+          if obj.valid?
+            @error = "#{@model.name} should not be valid when #{attribute} is less than zero"
             return false
           end
           
