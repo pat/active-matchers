@@ -40,7 +40,7 @@ Test @validates_length_of :name, :within => 3..40@
 
 Test @validates_numericality_of :age@
 
-	Model.should need_numeric(:age).using(@valid_attributes)
+	Model.should need(:age).to_be_numeric.using(@valid_attributes)
 
 
 You can group multiple validation checks together like so:

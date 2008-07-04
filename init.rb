@@ -1,1 +1,1 @@
-require "active_matchers"
+require "active-matchers"
