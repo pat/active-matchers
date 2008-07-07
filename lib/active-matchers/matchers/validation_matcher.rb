@@ -4,6 +4,8 @@ module ActiveMatchers
       def initialize(type, *attributes)
         @type = type
         @attributes = attributes
+        @create_action = 'create'
+        @new_action = 'new'
       end
       
       def matches?(model)
@@ -71,13 +73,27 @@ module ActiveMatchers
         self
       end
       
+      # Override the assumed default 'create' action and allow another one to be used.
+      # This makes it possible to use an 'unsafe' create to bypass attr_accessible and friends.
+      def with_create(action)
+        @create_action = action
+        self
+      end
+
+      # Override the assumed default 'new' action and allow another one to be used.
+      # This makes it possible to use an 'unsafe' new to bypass attr_accessible and friends.
+      def with_new(action)
+        @new_action = action
+        self
+      end
+      
       private
       
       def confirm_required
         return true if @attributes.empty?
 
         @attributes.each do |attribute|
-          obj = @model.new @base_attributes.except(*attribute)
+          obj = @model.send @new_action, @base_attributes.except(*attribute)
           yield obj if block_given?
           
           if obj.valid?
@@ -102,10 +118,10 @@ module ActiveMatchers
         return true if @attributes.empty?
 
         # Create first
-        @model.create @base_attributes
+        @model.send @create_action, @base_attributes
         # Create second, which will be invalid because unique values
         # are duplicated
-        obj = @model.new @base_attributes
+        obj = @model.send @new_action, @base_attributes
         return false if obj.valid?
         # Change the values of the unique attributes to remove collisions
         @attributes.each do |attribute|
@@ -118,7 +134,7 @@ module ActiveMatchers
       def confirm_one_of_many
         return true if @attributes.empty?
 
-        obj = @model.new @base_attributes.except(*@attributes)
+        obj = @model.send @new_action, @base_attributes.except(*@attributes)
         return false if obj.valid?
         @attributes.each do |attribute|
           obj.send "#{attribute.to_s}=", @base_attributes[attribute]
@@ -137,7 +153,7 @@ module ActiveMatchers
         @lower_limit ||= 0
         
         @attributes.each do |attribute|
-          obj = @model.new @base_attributes.except(attribute)
+          obj = @model.send @new_action, @base_attributes.except(attribute)
           
           if @lower_limit > 0
             obj.send "#{attribute.to_s}=", 'a'*(@lower_limit)
@@ -169,7 +185,7 @@ module ActiveMatchers
       def confirm_numericality
         return true if @attributes.empty?
         
-        obj = @model.new @base_attributes
+        obj = @model.send @new_action, @base_attributes
         
         @attributes.each do |attribute|
           
@@ -194,7 +210,7 @@ module ActiveMatchers
       def confirm_zero_or_greater
         return true if @attributes.empty?
         
-        obj = @model.new(@base_attributes)
+        obj = @model.send @new_action, @base_attributes
         
         @attributes.each do |attribute|
           obj.send("#{attribute.to_s}=",-1)
