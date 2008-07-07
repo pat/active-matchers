@@ -122,13 +122,23 @@ module ActiveMatchers
         # Create second, which will be invalid because unique values
         # are duplicated
         obj = @model.send @new_action, @base_attributes
-        return false if obj.valid?
+        if obj.valid?
+          @error = "#{@model.name} should not be valid when it is a duplicate"
+          return false 
+        end
         # Change the values of the unique attributes to remove collisions
         @attributes.each do |attribute|
-          return false if obj.errors.on(attribute).empty?
+          if obj.errors.on(attribute).empty?
+            @error = "#{@model.name} should have a value collision for #{attribute}"
+            return false 
+          end
           obj.send "#{attribute.to_s}=", "#{@base_attributes[attribute]} - Edit"
         end
-        return obj.valid?
+        unless obj.valid?
+          @error = "#{@model.name} should be valid without duplicate values"
+          return false
+        end
+        true
       end
       
       def confirm_one_of_many
