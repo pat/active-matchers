@@ -36,7 +36,7 @@ Test @validates_length_of :name, :minimum => 3@@
 
 Test @validates_length_of :name, :within => 3..40@
 
-  Model.should limit_length_of(:name).from(3).to(4).using(@valid_attributes)
+  Model.should limit_length_of(:name).from(3).to(40).using(@valid_attributes)
 
 Test @validates_numericality_of :age@
 
