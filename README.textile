@@ -76,3 +76,9 @@ Similar testing available for has_one (@Model.should have_one@) and @has_and_bel
 h2. Authors
 
 Copyright (c) 2007 Pat Allan & James Healy, released under the MIT license
+
+h2. Contributors
+
+* Chris Lloyd
+* Gareth Townsend
+* Wes Oldenbeuving

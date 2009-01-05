@@ -32,6 +32,7 @@ module ActiveMatchers
         return if @attributes.empty?
         
         @options ||= {}
+        @options[:extend] ||= []
   
         @attributes.each do |attribute|
           assoc = @model.reflect_on_association(attribute)
