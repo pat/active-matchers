@@ -2,7 +2,7 @@ Some helpful rspec matchers for testing validations and associations. It is not 
 
 h2. Install
 
-  script/plugin install http://github.com/freelancing-god/active-matchers.git
+  script/plugin install http://github.com/pat/active-matchers.git
 
 Make sure, in your spec_helper.rb file, you add an include as follows:
   config.include ActiveMatchers::Matchers
